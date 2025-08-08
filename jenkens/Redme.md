@@ -1,67 +1,23 @@
-pipeline {
-    agent any  // This runs the pipeline on any available agent
-
-    environment {
-        // Define environment variables
-        NODE_ENV = 'production'
-    }
-
-    options {
-        // Keep only the last 10 builds
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        timestamps()
-    }
-
-    tools {
-        // Define tools to use, Jenkins must have them configured
-        nodejs 'NodeJS_18'
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
-            }
-        }
-
+pipeline{
+    agent any
+    stages{
         stage('Build') {
             steps {
-                sh 'npm run build'
+                echo "Building ..."
             }
-        }
-
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
+        } 
+        
+        stage('Prod') {
             steps {
-                sh './deploy.sh'
+                echo "production ..."
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Cleaning up...'
-            cleanWs()
+        stage('Dev') {
+            steps {
+                echo "Devopliment"
+            }
         }
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-        failure {
-            echo 'Pipeline failed.'
-        }
+       
     }
 }
