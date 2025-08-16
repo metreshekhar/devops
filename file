@@ -4,6 +4,12 @@ pipeline{
       stage(dev) {
          steps {
              echo "devoply"
+
+       stage(prod) {
+          steps {
+              echo " production" 
+          }
+       }
          }
       }
    }
